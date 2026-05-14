@@ -69,6 +69,9 @@ function TorusMesh() {
 export function SceneBackground() {
   const [mode, setMode] = useState<"particles" | "mesh">("particles");
   const [reduce, setReduce] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
     const m = window.matchMedia("(prefers-reduced-motion: reduce)");
