@@ -118,14 +118,14 @@ export function Projects() {
               >
                 <X className="h-5 w-5" />
               </button>
-              <motion.div className="relative aspect-[4/3] md:aspect-auto">
+              <motion.div className="relative flex aspect-[4/3] items-center justify-center bg-background/40 md:aspect-auto">
                 <motion.img
                   layoutId={`img-${active.id}`}
                   src={active.cover}
                   alt={active.title}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-contain p-4"
                 />
-                <div className={`absolute inset-0 bg-gradient-to-tr ${active.accent} opacity-25 mix-blend-overlay`} />
+                <div className={`pointer-events-none absolute inset-0 bg-gradient-to-tr ${active.accent} opacity-15 mix-blend-overlay`} />
               </motion.div>
               <div className="overflow-y-auto p-7">
                 <h3 className="font-display text-3xl">{active.title}</h3>
@@ -142,18 +142,7 @@ export function Projects() {
                 </div>
 
                 <p className="mt-6 text-xs uppercase tracking-widest text-foreground/60">Gallery</p>
-                <div className="mt-2 grid grid-cols-2 gap-2">
-                  {active.images.slice(0, 4).map((src, i) => (
-                    <button
-                      key={src + i}
-                      onClick={() => setLightbox(src)}
-                      className="haptic group relative aspect-[4/3] overflow-hidden rounded-xl glass"
-                      data-cursor="hover"
-                    >
-                      <img src={src} alt="" loading="lazy" className="h-full w-full object-cover transition-transform group-hover:scale-110" />
-                    </button>
-                  ))}
-                </div>
+                <GalleryCarousel images={active.images} onOpen={setLightbox} />
 
                 <div className="mt-6 flex flex-wrap gap-3">
                   {active.links.map((l) => (
