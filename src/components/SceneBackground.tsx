@@ -94,16 +94,18 @@ export function SceneBackground() {
   return (
     <div className="pointer-events-none fixed inset-0 -z-10">
       <div className="absolute inset-0 grid-fade-mask">
-        <Canvas
-          camera={{ position: [0, 0, 5], fov: 60 }}
-          dpr={[1, reduce ? 1 : 1.5]}
-          gl={{ antialias: true, alpha: true }}
-        >
-          <ambientLight intensity={0.5} />
-          <pointLight position={[5, 5, 5]} intensity={1.4} color="#7be3ff" />
-          <pointLight position={[-5, -3, 2]} intensity={1.2} color="#ff6ad9" />
-          {mode === "particles" ? <Particles /> : <TorusMesh />}
-        </Canvas>
+        {mounted && (
+          <Canvas
+            camera={{ position: [0, 0, 5], fov: 60 }}
+            dpr={[1, reduce ? 1 : 1.5]}
+            gl={{ antialias: true, alpha: true }}
+          >
+            <ambientLight intensity={0.5} />
+            <pointLight position={[5, 5, 5]} intensity={1.4} color="#7be3ff" />
+            <pointLight position={[-5, -3, 2]} intensity={1.2} color="#ff6ad9" />
+            {mode === "particles" ? <Particles /> : <TorusMesh />}
+          </Canvas>
+        )}
       </div>
       {/* vignette */}
       <div
