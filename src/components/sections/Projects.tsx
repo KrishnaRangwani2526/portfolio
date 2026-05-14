@@ -12,7 +12,7 @@ function ProjectCard({ p, onOpen }: { p: Project; onOpen: () => void }) {
   const rx = useTransform(sy, [-0.5, 0.5], [10, -10]);
   const ry = useTransform(sx, [-0.5, 0.5], [-10, 10]);
 
-  const onMove = (e: MouseEvent<HTMLDivElement>) => {
+  const onMove = (e: MouseEvent<HTMLButtonElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
     x.set((e.clientX - r.left) / r.width - 0.5);
     y.set((e.clientY - r.top) / r.height - 0.5);
