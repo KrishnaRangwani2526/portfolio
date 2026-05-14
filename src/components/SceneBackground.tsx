@@ -3,12 +3,30 @@ import { Points, PointMaterial } from "@react-three/drei";
 import { useMemo, useRef, useState, useEffect } from "react";
 import * as THREE from "three";
 
-function Particles({ count = 2200 }: { count?: number }) {
-  const ref = useRef<THREE.Points>(null);
+// Shared smooth scroll progress (0..1)
+const scrollState = { target: 0, current: 0 };
+
+function useSmoothScroll() {
+  useFrame((_, delta) => {
+    const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    scrollState.target = Math.min(1, Math.max(0, window.scrollY / max));
+    // critically damped lerp — smooth easing
+    const k = 1 - Math.pow(0.001, delta);
+    scrollState.current += (scrollState.target - scrollState.current) * k;
+  });
+}
+
+function Scene() {
+  useSmoothScroll();
+
+  const pointsRef = useRef<THREE.Points>(null);
+  const meshRef = useRef<THREE.Mesh>(null);
+  const groupRef = useRef<THREE.Group>(null);
+
   const positions = useMemo(() => {
+    const count = 2200;
     const arr = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      // sphere distribution
       const r = 1.2 + Math.random() * 2.8;
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(2 * Math.random() - 1);
@@ -17,78 +35,83 @@ function Particles({ count = 2200 }: { count?: number }) {
       arr[i * 3 + 2] = r * Math.cos(phi);
     }
     return arr;
-  }, [count]);
+  }, []);
+
+  // Smoothed pointer
+  const pointer = useRef({ x: 0, y: 0 });
 
   useFrame((state, delta) => {
-    if (!ref.current) return;
-    ref.current.rotation.y += delta * 0.04;
-    ref.current.rotation.x += delta * 0.015;
-    const { x, y } = state.pointer;
-    ref.current.rotation.y += x * delta * 0.3;
-    ref.current.rotation.x += -y * delta * 0.3;
+    const p = scrollState.current;
+    pointer.current.x += (state.pointer.x - pointer.current.x) * Math.min(1, delta * 3);
+    pointer.current.y += (state.pointer.y - pointer.current.y) * Math.min(1, delta * 3);
+
+    if (groupRef.current) {
+      // gentle scroll-driven rotation/translation
+      groupRef.current.rotation.y = p * Math.PI * 0.8 + pointer.current.x * 0.15;
+      groupRef.current.rotation.x = p * 0.6 + pointer.current.y * -0.1;
+      groupRef.current.position.y = -p * 1.2;
+    }
+
+    if (pointsRef.current) {
+      pointsRef.current.rotation.y += delta * 0.04;
+      const s = 1 - p * 0.85;
+      pointsRef.current.scale.setScalar(Math.max(0.001, s));
+      const mat = pointsRef.current.material as THREE.PointsMaterial;
+      mat.opacity = Math.max(0, 1 - p * 1.4);
+      mat.transparent = true;
+    }
+
+    if (meshRef.current) {
+      meshRef.current.rotation.x += delta * 0.18;
+      meshRef.current.rotation.y += delta * 0.12;
+      const s = 0.2 + p * 1.0;
+      meshRef.current.scale.setScalar(s);
+      const mat = meshRef.current.material as THREE.MeshStandardMaterial;
+      mat.opacity = Math.min(1, p * 1.6);
+      mat.transparent = true;
+    }
   });
 
   return (
-    <Points ref={ref} positions={positions} stride={3} frustumCulled={false}>
-      <PointMaterial
-        transparent
-        color="#7be3ff"
-        size={0.015}
-        sizeAttenuation
-        depthWrite={false}
-        blending={THREE.AdditiveBlending}
-      />
-    </Points>
-  );
-}
-
-function TorusMesh() {
-  const ref = useRef<THREE.Mesh>(null);
-  useFrame((state, delta) => {
-    if (!ref.current) return;
-    ref.current.rotation.x += delta * 0.2;
-    ref.current.rotation.y += delta * 0.15;
-    ref.current.position.x = state.pointer.x * 0.4;
-    ref.current.position.y = state.pointer.y * 0.4;
-  });
-  return (
-    <mesh ref={ref} position={[0, 0, 0]}>
-      <torusKnotGeometry args={[1.1, 0.32, 200, 32]} />
-      <meshStandardMaterial
-        color="#b25dff"
-        emissive="#5a23a8"
-        emissiveIntensity={0.6}
-        roughness={0.25}
-        metalness={0.7}
-        wireframe
-      />
-    </mesh>
+    <group ref={groupRef}>
+      <Points ref={pointsRef} positions={positions} stride={3} frustumCulled={false}>
+        <PointMaterial
+          transparent
+          color="#7ec8ff"
+          size={0.018}
+          sizeAttenuation
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </Points>
+      <mesh ref={meshRef}>
+        <torusKnotGeometry args={[1.1, 0.32, 220, 32]} />
+        <meshStandardMaterial
+          color="#5aa9ff"
+          emissive="#1f4fa8"
+          emissiveIntensity={0.7}
+          roughness={0.25}
+          metalness={0.7}
+          wireframe
+          transparent
+          opacity={0}
+        />
+      </mesh>
+    </group>
   );
 }
 
 export function SceneBackground() {
-  const [mode, setMode] = useState<"particles" | "mesh">("particles");
   const [reduce, setReduce] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => { setMounted(true); }, []);
-
   useEffect(() => {
+    setMounted(true);
     const m = window.matchMedia("(prefers-reduced-motion: reduce)");
     setReduce(m.matches);
     const onChange = () => setReduce(m.matches);
     m.addEventListener?.("change", onChange);
-
-    const onSection = (e: Event) => {
-      const id = (e as CustomEvent<string>).detail;
-      if (id === "projects" || id === "experience") setMode("mesh");
-      else setMode("particles");
-    };
-    window.addEventListener("sectionchange", onSection as EventListener);
-    return () => {
-      m.removeEventListener?.("change", onChange);
-      window.removeEventListener("sectionchange", onSection as EventListener);
-    };
+    return () => m.removeEventListener?.("change", onChange);
   }, []);
 
   return (
@@ -100,14 +123,13 @@ export function SceneBackground() {
             dpr={[1, reduce ? 1 : 1.5]}
             gl={{ antialias: true, alpha: true }}
           >
-            <ambientLight intensity={0.5} />
-            <pointLight position={[5, 5, 5]} intensity={1.4} color="#7be3ff" />
-            <pointLight position={[-5, -3, 2]} intensity={1.2} color="#ff6ad9" />
-            {mode === "particles" ? <Particles /> : <TorusMesh />}
+            <ambientLight intensity={0.55} />
+            <pointLight position={[5, 5, 5]} intensity={1.4} color="#7ec8ff" />
+            <pointLight position={[-5, -3, 2]} intensity={1.1} color="#3b82f6" />
+            <Scene />
           </Canvas>
         )}
       </div>
-      {/* vignette */}
       <div
         className="absolute inset-0"
         style={{

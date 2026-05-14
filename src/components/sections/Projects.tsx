@@ -1,8 +1,8 @@
 import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useState, type MouseEvent } from "react";
+import { useState, useEffect, type MouseEvent } from "react";
 import { projects, type Project } from "@/data/portfolio";
 import { SectionLabel } from "./About";
-import { ExternalLink, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, ExternalLink, X } from "lucide-react";
 
 function ProjectCard({ p, onOpen }: { p: Project; onOpen: () => void }) {
   const x = useMotionValue(0);
@@ -55,6 +55,95 @@ function ProjectCard({ p, onOpen }: { p: Project; onOpen: () => void }) {
         </div>
       </div>
     </motion.button>
+  );
+}
+
+function GalleryCarousel({ images, onOpen }: { images: string[]; onOpen: (src: string) => void }) {
+  const slides = images.slice(0, 4);
+  const [idx, setIdx] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const n = slides.length;
+
+  useEffect(() => {
+    if (paused || n <= 1) return;
+    const t = setInterval(() => setIdx((i) => (i + 1) % n), 2000);
+    return () => clearInterval(t);
+  }, [paused, n]);
+
+  const go = (d: number) => setIdx((i) => (i + d + n) % n);
+
+  return (
+    <div
+      className="mt-2 select-none"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <div className="relative overflow-hidden rounded-xl glass aspect-[16/10]">
+        <motion.div
+          className="flex h-full"
+          animate={{ x: `-${idx * 100}%` }}
+          transition={{ type: "spring", stiffness: 220, damping: 30 }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.2}
+          onDragEnd={(_, info) => {
+            if (info.offset.x < -60) go(1);
+            else if (info.offset.x > 60) go(-1);
+          }}
+        >
+          {slides.map((src, i) => (
+            <button
+              type="button"
+              key={src + i}
+              onClick={() => onOpen(src)}
+              className="relative h-full w-full shrink-0"
+              style={{ flex: "0 0 100%" }}
+            >
+              <img
+                src={src}
+                alt=""
+                loading="lazy"
+                draggable={false}
+                className="h-full w-full object-cover"
+              />
+            </button>
+          ))}
+        </motion.div>
+
+        {n > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={() => go(-1)}
+              aria-label="Previous"
+              className="absolute left-2 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full glass haptic"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => go(1)}
+              aria-label="Next"
+              className="absolute right-2 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full glass haptic"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
+              {slides.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setIdx(i)}
+                  aria-label={`Go to slide ${i + 1}`}
+                  className={`h-1.5 rounded-full transition-all ${
+                    i === idx ? "w-6 bg-[var(--neon)]" : "w-1.5 bg-foreground/40"
+                  }`}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -118,14 +207,14 @@ export function Projects() {
               >
                 <X className="h-5 w-5" />
               </button>
-              <motion.div className="relative aspect-[4/3] md:aspect-auto">
+              <motion.div className="relative flex aspect-[4/3] items-center justify-center bg-background/40 md:aspect-auto">
                 <motion.img
                   layoutId={`img-${active.id}`}
                   src={active.cover}
                   alt={active.title}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-contain p-4"
                 />
-                <div className={`absolute inset-0 bg-gradient-to-tr ${active.accent} opacity-25 mix-blend-overlay`} />
+                <div className={`pointer-events-none absolute inset-0 bg-gradient-to-tr ${active.accent} opacity-15 mix-blend-overlay`} />
               </motion.div>
               <div className="overflow-y-auto p-7">
                 <h3 className="font-display text-3xl">{active.title}</h3>
@@ -142,18 +231,7 @@ export function Projects() {
                 </div>
 
                 <p className="mt-6 text-xs uppercase tracking-widest text-foreground/60">Gallery</p>
-                <div className="mt-2 grid grid-cols-2 gap-2">
-                  {active.images.slice(0, 4).map((src, i) => (
-                    <button
-                      key={src + i}
-                      onClick={() => setLightbox(src)}
-                      className="haptic group relative aspect-[4/3] overflow-hidden rounded-xl glass"
-                      data-cursor="hover"
-                    >
-                      <img src={src} alt="" loading="lazy" className="h-full w-full object-cover transition-transform group-hover:scale-110" />
-                    </button>
-                  ))}
-                </div>
+                <GalleryCarousel images={active.images} onOpen={setLightbox} />
 
                 <div className="mt-6 flex flex-wrap gap-3">
                   {active.links.map((l) => (
