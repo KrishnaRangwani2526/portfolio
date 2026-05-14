@@ -1,8 +1,8 @@
 import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useState, type MouseEvent } from "react";
+import { useState, useEffect, type MouseEvent } from "react";
 import { projects, type Project } from "@/data/portfolio";
 import { SectionLabel } from "./About";
-import { ExternalLink, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, ExternalLink, X } from "lucide-react";
 
 function ProjectCard({ p, onOpen }: { p: Project; onOpen: () => void }) {
   const x = useMotionValue(0);
