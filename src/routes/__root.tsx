@@ -9,6 +9,10 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { Cursor } from "@/components/Cursor";
+import { SceneBackground } from "@/components/SceneBackground";
+import { FloatingNav } from "@/components/FloatingNav";
 
 function NotFoundComponent() {
   return (
