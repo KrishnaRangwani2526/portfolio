@@ -1,7 +1,18 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Home, User, Sparkles, Briefcase, FolderKanban, Github, Linkedin, Code2, FileText, Sun, Moon, Menu, X } from "lucide-react";
+import { Home, User, Sparkles, Briefcase, FolderKanban, Code2, FileText, Sun, Moon, Menu, X } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
+
+const Github = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden {...props}>
+    <path d="M12 .5C5.73.5.99 5.24.99 11.51c0 4.85 3.14 8.96 7.5 10.41.55.1.75-.24.75-.53 0-.26-.01-.95-.02-1.86-3.05.66-3.69-1.47-3.69-1.47-.5-1.27-1.21-1.61-1.21-1.61-.99-.68.08-.66.08-.66 1.1.08 1.68 1.13 1.68 1.13.97 1.67 2.55 1.19 3.17.91.1-.71.38-1.19.69-1.46-2.43-.28-4.99-1.22-4.99-5.42 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.92 0 0 .92-.3 3.02 1.12.88-.24 1.82-.36 2.76-.37.94.01 1.88.13 2.76.37 2.1-1.42 3.02-1.12 3.02-1.12.6 1.52.22 2.64.11 2.92.7.77 1.13 1.75 1.13 2.95 0 4.21-2.57 5.13-5.01 5.41.39.34.74 1.01.74 2.04 0 1.47-.01 2.65-.01 3.01 0 .29.2.64.76.53 4.36-1.45 7.5-5.56 7.5-10.41C23.01 5.24 18.27.5 12 .5z"/>
+  </svg>
+);
+const Linkedin = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden {...props}>
+    <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.22 8.27h4.55V23.5H.22V8.27zM8.06 8.27h4.36v2.08h.06c.61-1.16 2.1-2.39 4.32-2.39 4.62 0 5.48 3.04 5.48 7v8.54h-4.55v-7.57c0-1.81-.03-4.13-2.52-4.13-2.52 0-2.91 1.97-2.91 4v7.7H8.06V8.27z"/>
+  </svg>
+);
 
 const sections = [
   { id: "home", label: "Home", icon: Home },
