@@ -147,6 +147,7 @@ function GalleryCarousel({ images, onOpen }: { images: string[]; onOpen: (src: s
   );
 }
 
+export function Projects() {
   const [active, setActive] = useState<Project | null>(null);
   const [lightbox, setLightbox] = useState<string | null>(null);
 
