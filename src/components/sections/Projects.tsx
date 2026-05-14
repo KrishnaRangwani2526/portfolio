@@ -58,7 +58,95 @@ function ProjectCard({ p, onOpen }: { p: Project; onOpen: () => void }) {
   );
 }
 
-export function Projects() {
+function GalleryCarousel({ images, onOpen }: { images: string[]; onOpen: (src: string) => void }) {
+  const slides = images.slice(0, 4);
+  const [idx, setIdx] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const n = slides.length;
+
+  useEffect(() => {
+    if (paused || n <= 1) return;
+    const t = setInterval(() => setIdx((i) => (i + 1) % n), 2000);
+    return () => clearInterval(t);
+  }, [paused, n]);
+
+  const go = (d: number) => setIdx((i) => (i + d + n) % n);
+
+  return (
+    <div
+      className="mt-2 select-none"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <div className="relative overflow-hidden rounded-xl glass aspect-[16/10]">
+        <motion.div
+          className="flex h-full"
+          animate={{ x: `-${idx * 100}%` }}
+          transition={{ type: "spring", stiffness: 220, damping: 30 }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.2}
+          onDragEnd={(_, info) => {
+            if (info.offset.x < -60) go(1);
+            else if (info.offset.x > 60) go(-1);
+          }}
+        >
+          {slides.map((src, i) => (
+            <button
+              type="button"
+              key={src + i}
+              onClick={() => onOpen(src)}
+              className="relative h-full w-full shrink-0"
+              style={{ flex: "0 0 100%" }}
+            >
+              <img
+                src={src}
+                alt=""
+                loading="lazy"
+                draggable={false}
+                className="h-full w-full object-cover"
+              />
+            </button>
+          ))}
+        </motion.div>
+
+        {n > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={() => go(-1)}
+              aria-label="Previous"
+              className="absolute left-2 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full glass haptic"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => go(1)}
+              aria-label="Next"
+              className="absolute right-2 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full glass haptic"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
+              {slides.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setIdx(i)}
+                  aria-label={`Go to slide ${i + 1}`}
+                  className={`h-1.5 rounded-full transition-all ${
+                    i === idx ? "w-6 bg-[var(--neon)]" : "w-1.5 bg-foreground/40"
+                  }`}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
   const [active, setActive] = useState<Project | null>(null);
   const [lightbox, setLightbox] = useState<string | null>(null);
 
