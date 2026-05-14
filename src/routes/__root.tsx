@@ -113,7 +113,12 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <ThemeProvider>
+        <SceneBackground />
+        <Cursor />
+        <FloatingNav />
+        <Outlet />
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
