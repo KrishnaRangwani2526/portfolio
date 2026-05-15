@@ -15,18 +15,14 @@ export function About() {
             className="glass-strong glow rounded-3xl p-8 md:col-span-3"
           >
             <h3 className="font-display text-2xl sm:text-3xl">
-              Crafting interfaces that <span className="neon-text">feel alive</span>.
+              Building web products with <span className="neon-text">AI, automation,</span> and clarity.
             </h3>
             <p className="mt-4 text-foreground/75 leading-relaxed">
-              I'm a product engineer with a designer's eye and an obsession for
-              motion, performance, and detail. Over the last 6+ years I've shipped
-              tools used by hundreds of thousands of people — from realtime
-              collaboration canvases to crypto wallets — always with a care for the
-              moments between clicks.
+              I'm a BE Information Technology student at UIET Panjab University, focused on full-stack systems, AI-driven workflows, and backend automation.
+              I create products that make data easy to understand, workflows faster, and digital experiences more dependable.
             </p>
             <p className="mt-4 text-foreground/65 leading-relaxed">
-              When I'm not coding, you'll find me sketching type, exploring synths,
-              or speedrunning side projects.
+              Recent work includes fee management dashboards, AI-powered prescription OCR, and secure attendance systems that combine face recognition and location validation.
             </p>
           </motion.div>
 
@@ -37,8 +33,8 @@ export function About() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="grid gap-4 md:col-span-2"
           >
-            <Stat label="Years building" value="6+" />
-            <Stat label="Projects shipped" value="40+" />
+            <Stat label="Years building" value="2+" />
+            <Stat label="Projects shipped" value="10+" />
             <div className="glass rounded-3xl p-6">
               <p className="text-xs uppercase tracking-widest text-foreground/60">Based in</p>
               <p className="mt-2 font-display text-xl">{profile.location}</p>

@@ -23,10 +23,10 @@ const sections = [
 ];
 
 const externals = [
-  { label: "GitHub", icon: Github, href: "https://github.com" },
-  { label: "LinkedIn", icon: Linkedin, href: "https://linkedin.com" },
-  { label: "LeetCode", icon: Code2, href: "https://leetcode.com" },
-  { label: "Resume", icon: FileText, href: "#" },
+  { label: "GitHub", icon: Github, href: "https://github.com/KrishnaRangwani2526" },
+  { label: "LinkedIn", icon: Linkedin, href: "https://www.linkedin.com/in/krishna-rangwani-0b1204397" },
+  { label: "LeetCode", icon: Code2, href: "https://leetcode.com/u/tNCfE0uXzx/" },
+  { label: "Resume", icon: FileText, href: "/krishna resume.pdf" },
 ];
 
 export function FloatingNav() {

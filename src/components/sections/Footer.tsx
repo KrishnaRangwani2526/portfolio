@@ -9,7 +9,7 @@ export function Footer() {
           Got an idea? <a href={`mailto:${profile.email}`} className="neon-text underline-offset-4 hover:underline">Say hi.</a>
         </h3>
         <p className="mt-6 text-xs text-foreground/50">
-          © {new Date().getFullYear()} {profile.name} — Crafted with React, Three.js & Framer Motion.
+          © {new Date().getFullYear()} {profile.name} — Crafted with React and modern AI tooling.
         </p>
       </div>
     </footer>

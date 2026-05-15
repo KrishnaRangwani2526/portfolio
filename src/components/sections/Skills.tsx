@@ -8,7 +8,7 @@ export function Skills() {
       <div className="mx-auto max-w-5xl">
         <SectionLabel>Skills</SectionLabel>
         <h2 className="font-display mt-4 text-4xl sm:text-5xl">
-          A toolkit for <span className="neon-text">expressive, fast</span> products.
+          Core technology for <span className="neon-text">web, AI, and backend</span> solutions.
         </h2>
 
         <div className="mt-10 grid gap-4 sm:grid-cols-2">

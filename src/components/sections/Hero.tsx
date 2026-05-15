@@ -31,25 +31,14 @@ export function Hero() {
   return (
     <section id="home" className="relative flex min-h-[100svh] items-center justify-center px-6">
       <div className="mx-auto max-w-5xl text-center">
-        <motion.span
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="glass mx-auto inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs uppercase tracking-[0.25em] text-foreground/80"
-        >
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--neon)]" />
-          Available for new work
-        </motion.span>
-
         <motion.h1
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1 }}
           className="font-display mt-6 text-5xl font-semibold leading-[0.95] tracking-tight sm:text-7xl md:text-8xl"
         >
-          Hi, I'm <span className="neon-text">{profile.name.split(" ")[0]}</span>.
+          Hi, I'm Krishna.
           <br />
-          <span className="text-foreground/90">I build </span>
           <span className="relative inline-block align-baseline">
             <motion.span
               key={i}

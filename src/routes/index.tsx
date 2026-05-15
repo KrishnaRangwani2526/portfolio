@@ -10,10 +10,10 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "Alex Verma — Full-Stack Engineer & Creative Technologist" },
-      { name: "description", content: "Portfolio of Alex Verma — immersive interfaces, motion design, and full-stack engineering." },
-      { property: "og:title", content: "Alex Verma — Portfolio" },
-      { property: "og:description", content: "Immersive interfaces, motion design, full-stack engineering." },
+      { title: "Krishna Rangwani — Full-Stack Developer & AI Engineer" },
+      { name: "description", content: "Portfolio of Krishna Rangwani — AI-driven web applications, backend automation, and intelligent products." },
+      { property: "og:title", content: "Krishna Rangwani — Portfolio" },
+      { property: "og:description", content: "AI-driven web applications, backend automation, and intelligent products." },
     ],
   }),
 });

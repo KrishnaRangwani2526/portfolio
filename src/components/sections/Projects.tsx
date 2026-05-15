@@ -37,12 +37,12 @@ function ProjectCard({ p, onOpen }: { p: Project; onOpen: () => void }) {
           loading="lazy"
           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
-        <div className={`absolute inset-0 bg-gradient-to-tr ${p.accent} opacity-30 mix-blend-overlay`} />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+        <div className={`absolute inset-0 bg-gradient-to-tr ${p.accent} opacity-15 mix-blend-overlay`} />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
       </div>
       <div className="p-5" style={{ transform: "translateZ(30px)" }}>
         <div className="flex items-start justify-between gap-3">
-          <h3 className="font-display text-lg">{p.title}</h3>
+          <h3 className="font-display text-lg font-semibold">{p.title}</h3>
           <ExternalLink className="h-4 w-4 text-foreground/50 transition group-hover:text-[var(--neon)]" />
         </div>
         <p className="mt-1 text-sm text-foreground/65 line-clamp-2">{p.description}</p>

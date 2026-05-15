@@ -36,7 +36,7 @@ export function Experience() {
       <div className="mx-auto max-w-5xl">
         <SectionLabel>Experience</SectionLabel>
         <h2 className="font-display mt-4 text-4xl sm:text-5xl">
-          A timeline of <span className="neon-text">work I'm proud of</span>.
+          A timeline of <span className="neon-text">projects and experience</span>.
         </h2>
 
         <div className="mt-12 space-y-6" style={{ perspective: 1200 }}>
