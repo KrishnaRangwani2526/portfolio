@@ -93,7 +93,7 @@ function ArcGallery({ images, onOpen }: { images: string[]; onOpen: (src: string
     <div className="relative w-full select-none">
       {/* Arc stage */}
       <div
-        className="relative mx-auto h-[300px] w-full max-w-[640px] sm:h-[340px]"
+        className="relative mx-auto h-[360px] w-full max-w-[720px] sm:h-[400px]"
         style={{ perspective: 1200 }}
       >
         <motion.div
