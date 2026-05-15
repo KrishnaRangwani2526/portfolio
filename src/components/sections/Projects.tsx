@@ -85,19 +85,35 @@ function ArcGallery({ images, onOpen }: { images: string[]; onOpen: (src: string
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [n]);
 
-  // Geometry of the arc
-  const RADIUS = 260; // px - distance from arc center
-  const SPREAD = 24;  // degrees between adjacent slides
+  // Responsive geometry — measured from viewport so the arc fits cleanly on mobile
+  const [vw, setVw] = useState(() => (typeof window !== "undefined" ? window.innerWidth : 1024));
+  useEffect(() => {
+    const onResize = () => setVw(window.innerWidth);
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  const isMobile = vw < 640;
+  const isTiny = vw < 420;
+
+  const RADIUS = isTiny ? 130 : isMobile ? 160 : 260;
+  const SPREAD = isMobile ? 18 : 24;
+  const ACTIVE_W = isTiny ? 230 : isMobile ? 270 : 400;
+  const ACTIVE_H = isTiny ? 155 : isMobile ? 180 : 270;
+  const SIDE_W = isTiny ? 130 : isMobile ? 150 : 220;
+  const SIDE_H = isTiny ? 88 : isMobile ? 100 : 150;
+  const STAGE_H = isTiny ? 240 : isMobile ? 280 : 400;
 
   return (
-    <div className="relative w-full select-none">
+    <div className="relative w-full select-none overflow-hidden">
       {/* Arc stage */}
       <div
-        className="relative mx-auto h-[360px] w-full max-w-[720px] sm:h-[400px]"
-        style={{ perspective: 1200 }}
+        className="relative mx-auto w-full max-w-[720px]"
+        style={{ perspective: 1200, height: STAGE_H }}
       >
         <motion.div
-          className="absolute inset-0 cursor-grab active:cursor-grabbing"
+          className="absolute inset-0 cursor-grab active:cursor-grabbing touch-pan-y"
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.18}
@@ -113,6 +129,9 @@ function ArcGallery({ images, onOpen }: { images: string[]; onOpen: (src: string
             if (off < -n / 2) off += n;
 
             const isActive = off === 0;
+            // On mobile, only render the immediate neighbours so they never collide with the hero
+            if (isMobile && Math.abs(off) > 1) return null;
+
             const angle = off * SPREAD;            // tilt around arc
             const rad = (angle * Math.PI) / 180;
             const x = Math.sin(rad) * RADIUS;
@@ -130,8 +149,8 @@ function ArcGallery({ images, onOpen }: { images: string[]; onOpen: (src: string
                 className="absolute left-1/2 top-1/2 origin-center"
                 style={{ zIndex: 50 + z }}
                 animate={{
-                  x: x - 0,
-                  y: y - 0,
+                  x,
+                  y,
                   rotate: angle,
                   scale,
                   opacity,
@@ -140,10 +159,10 @@ function ArcGallery({ images, onOpen }: { images: string[]; onOpen: (src: string
                 transition={{ type: "spring", stiffness: 180, damping: 22, mass: 0.7 }}
               >
                 <div
-                  className="relative -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[28px] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.55)] ring-1 ring-white/10"
+                  className="relative -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[24px] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.55)] ring-1 ring-white/10"
                   style={{
-                    width: isActive ? 400 : 220,
-                    height: isActive ? 270 : 150,
+                    width: isActive ? ACTIVE_W : SIDE_W,
+                    height: isActive ? ACTIVE_H : SIDE_H,
                     transition: "width 0.5s cubic-bezier(.2,.8,.2,1), height 0.5s cubic-bezier(.2,.8,.2,1)",
                   }}
                 >
@@ -156,11 +175,11 @@ function ArcGallery({ images, onOpen }: { images: string[]; onOpen: (src: string
                     style={{ filter: isActive ? "none" : "saturate(0.85) brightness(0.9)" }}
                   />
                   {/* soft edge vignette */}
-                  <div className="pointer-events-none absolute inset-0 rounded-[28px] shadow-[inset_0_0_40px_rgba(0,0,0,0.45)]" />
+                  <div className="pointer-events-none absolute inset-0 rounded-[24px] shadow-[inset_0_0_40px_rgba(0,0,0,0.45)]" />
                   {isActive && (
                     <motion.div
                       layoutId="arc-active-glow"
-                      className="pointer-events-none absolute -inset-1 rounded-[32px]"
+                      className="pointer-events-none absolute -inset-1 rounded-[28px]"
                       style={{
                         background:
                           "linear-gradient(135deg, var(--neon), transparent 60%)",
