@@ -21,6 +21,8 @@ function Scene() {
 
   const pointsRef = useRef<THREE.Points>(null);
   const meshRef = useRef<THREE.Mesh>(null);
+  const icoRef = useRef<THREE.Mesh>(null);
+  const ringRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
 
   const positions = useMemo(() => {
