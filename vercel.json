@@ -1,9 +1,5 @@
 {
   "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install",
-  "framework": "vite",
-  "env": {
-    "VERCEL_ENV": "production"
-  }
+  "outputDirectory": "dist/client",
+  "framework": "other"
 }
