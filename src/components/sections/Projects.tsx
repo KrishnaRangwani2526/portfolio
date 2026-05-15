@@ -282,7 +282,7 @@ export function Projects() {
                 className="pointer-events-none absolute opacity-0"
               />
 
-              <div className="overflow-y-auto">
+              <div className="overflow-y-auto overscroll-contain" style={{ overscrollBehavior: "contain" }}>
                 {/* Arc gallery */}
                 <div className="relative px-4 pt-10 pb-2">
                   <div className={`pointer-events-none absolute inset-0 bg-gradient-to-b ${active.accent} opacity-10`} />
