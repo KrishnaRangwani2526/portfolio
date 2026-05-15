@@ -21,6 +21,8 @@ function Scene() {
 
   const pointsRef = useRef<THREE.Points>(null);
   const meshRef = useRef<THREE.Mesh>(null);
+  const icoRef = useRef<THREE.Mesh>(null);
+  const ringRef = useRef<THREE.Mesh>(null);
   const groupRef = useRef<THREE.Group>(null);
 
   const positions = useMemo(() => {
@@ -70,6 +72,28 @@ function Scene() {
       mat.opacity = Math.min(1, p * 1.6);
       mat.transparent = true;
     }
+
+    if (icoRef.current) {
+      const t = state.clock.elapsedTime;
+      icoRef.current.rotation.x = t * 0.25;
+      icoRef.current.rotation.y = t * 0.35;
+      icoRef.current.position.x = Math.sin(t * 0.4) * 2.4;
+      icoRef.current.position.y = Math.cos(t * 0.3) * 1.4 - p * 0.6;
+      icoRef.current.position.z = -1.5 + Math.sin(t * 0.5) * 0.8;
+      const mat = icoRef.current.material as THREE.MeshStandardMaterial;
+      mat.opacity = 0.6 - p * 0.3;
+      mat.transparent = true;
+    }
+
+    if (ringRef.current) {
+      ringRef.current.rotation.z += delta * 0.06;
+      ringRef.current.rotation.x = Math.PI / 2.4 + Math.sin(state.clock.elapsedTime * 0.3) * 0.08;
+      const s = 1.6 + p * 0.6;
+      ringRef.current.scale.setScalar(s);
+      const mat = ringRef.current.material as THREE.MeshBasicMaterial;
+      mat.opacity = 0.18 + p * 0.15;
+      mat.transparent = true;
+    }
   });
 
   return (
@@ -96,6 +120,23 @@ function Scene() {
           transparent
           opacity={0}
         />
+      </mesh>
+      <mesh ref={icoRef} position={[2, 1, -1]}>
+        <icosahedronGeometry args={[0.55, 0]} />
+        <meshStandardMaterial
+          color="#9ad4ff"
+          emissive="#3b82f6"
+          emissiveIntensity={0.6}
+          roughness={0.2}
+          metalness={0.85}
+          flatShading
+          transparent
+          opacity={0.5}
+        />
+      </mesh>
+      <mesh ref={ringRef} rotation={[Math.PI / 2.4, 0, 0]}>
+        <torusGeometry args={[2.6, 0.012, 16, 160]} />
+        <meshBasicMaterial color="#7ec8ff" transparent opacity={0.2} />
       </mesh>
     </group>
   );

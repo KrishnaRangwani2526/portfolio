@@ -86,14 +86,14 @@ function ArcGallery({ images, onOpen }: { images: string[]; onOpen: (src: string
   }, [n]);
 
   // Geometry of the arc
-  const RADIUS = 230; // px - distance from arc center
-  const SPREAD = 26;  // degrees between adjacent slides
+  const RADIUS = 260; // px - distance from arc center
+  const SPREAD = 24;  // degrees between adjacent slides
 
   return (
     <div className="relative w-full select-none">
       {/* Arc stage */}
       <div
-        className="relative mx-auto h-[300px] w-full max-w-[640px] sm:h-[340px]"
+        className="relative mx-auto h-[360px] w-full max-w-[720px] sm:h-[400px]"
         style={{ perspective: 1200 }}
       >
         <motion.div
@@ -142,8 +142,8 @@ function ArcGallery({ images, onOpen }: { images: string[]; onOpen: (src: string
                 <div
                   className="relative -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[28px] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.55)] ring-1 ring-white/10"
                   style={{
-                    width: isActive ? 320 : 200,
-                    height: isActive ? 220 : 140,
+                    width: isActive ? 400 : 220,
+                    height: isActive ? 270 : 150,
                     transition: "width 0.5s cubic-bezier(.2,.8,.2,1), height 0.5s cubic-bezier(.2,.8,.2,1)",
                   }}
                 >
@@ -216,6 +216,15 @@ export function Projects() {
   const [active, setActive] = useState<Project | null>(null);
   const [lightbox, setLightbox] = useState<string | null>(null);
 
+  // Lock body scroll while modal/lightbox open
+  useEffect(() => {
+    const open = !!active || !!lightbox;
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, [active, lightbox]);
+
   return (
     <section id="projects" className="relative px-6 py-24 sm:py-32">
       <div className="mx-auto max-w-6xl">
@@ -282,7 +291,7 @@ export function Projects() {
                 className="pointer-events-none absolute opacity-0"
               />
 
-              <div className="overflow-y-auto">
+              <div className="overflow-y-auto overscroll-contain" style={{ overscrollBehavior: "contain" }}>
                 {/* Arc gallery */}
                 <div className="relative px-4 pt-10 pb-2">
                   <div className={`pointer-events-none absolute inset-0 bg-gradient-to-b ${active.accent} opacity-10`} />
