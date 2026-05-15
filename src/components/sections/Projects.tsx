@@ -86,8 +86,8 @@ function ArcGallery({ images, onOpen }: { images: string[]; onOpen: (src: string
   }, [n]);
 
   // Geometry of the arc
-  const RADIUS = 230; // px - distance from arc center
-  const SPREAD = 26;  // degrees between adjacent slides
+  const RADIUS = 260; // px - distance from arc center
+  const SPREAD = 24;  // degrees between adjacent slides
 
   return (
     <div className="relative w-full select-none">
