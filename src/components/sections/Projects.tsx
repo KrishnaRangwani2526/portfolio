@@ -216,6 +216,15 @@ export function Projects() {
   const [active, setActive] = useState<Project | null>(null);
   const [lightbox, setLightbox] = useState<string | null>(null);
 
+  // Lock body scroll while modal/lightbox open
+  useEffect(() => {
+    const open = !!active || !!lightbox;
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, [active, lightbox]);
+
   return (
     <section id="projects" className="relative px-6 py-24 sm:py-32">
       <div className="mx-auto max-w-6xl">
