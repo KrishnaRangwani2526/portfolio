@@ -58,90 +58,155 @@ function ProjectCard({ p, onOpen }: { p: Project; onOpen: () => void }) {
   );
 }
 
-function GalleryCarousel({ images, onOpen }: { images: string[]; onOpen: (src: string) => void }) {
-  const slides = images.slice(0, 4);
-  const [idx, setIdx] = useState(0);
-  const [paused, setPaused] = useState(false);
+function ArcGallery({ images, onOpen }: { images: string[]; onOpen: (src: string) => void }) {
+  const slides = images;
   const n = slides.length;
+  const [idx, setIdx] = useState(0);
 
+  const haptic = () => {
+    if (typeof navigator !== "undefined" && "vibrate" in navigator) {
+      try { navigator.vibrate?.(18); } catch { /* noop */ }
+    }
+  };
+
+  const go = (d: number) => {
+    setIdx((i) => (i + d + n) % n);
+    haptic();
+  };
+
+  // Keyboard arrows
   useEffect(() => {
-    if (paused || n <= 1) return;
-    const t = setInterval(() => setIdx((i) => (i + 1) % n), 2000);
-    return () => clearInterval(t);
-  }, [paused, n]);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") go(-1);
+      else if (e.key === "ArrowRight") go(1);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [n]);
 
-  const go = (d: number) => setIdx((i) => (i + d + n) % n);
+  // Geometry of the arc
+  const RADIUS = 230; // px - distance from arc center
+  const SPREAD = 26;  // degrees between adjacent slides
 
   return (
-    <div
-      className="mt-2 select-none"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
-      <div className="relative overflow-hidden rounded-xl glass aspect-[16/10]">
+    <div className="relative w-full select-none">
+      {/* Arc stage */}
+      <div
+        className="relative mx-auto h-[300px] w-full max-w-[640px] sm:h-[340px]"
+        style={{ perspective: 1200 }}
+      >
         <motion.div
-          className="flex h-full"
-          animate={{ x: `-${idx * 100}%` }}
-          transition={{ type: "spring", stiffness: 220, damping: 30 }}
+          className="absolute inset-0 cursor-grab active:cursor-grabbing"
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.2}
+          dragElastic={0.18}
           onDragEnd={(_, info) => {
-            if (info.offset.x < -60) go(1);
-            else if (info.offset.x > 60) go(-1);
+            if (info.offset.x < -50 || info.velocity.x < -300) go(1);
+            else if (info.offset.x > 50 || info.velocity.x > 300) go(-1);
           }}
         >
-          {slides.map((src, i) => (
-            <button
-              type="button"
-              key={src + i}
-              onClick={() => onOpen(src)}
-              className="relative h-full w-full shrink-0"
-              style={{ flex: "0 0 100%" }}
-            >
-              <img
-                src={src}
-                alt=""
-                loading="lazy"
-                draggable={false}
-                className="h-full w-full object-cover"
-              />
-            </button>
-          ))}
-        </motion.div>
+          {slides.map((src, i) => {
+            // Shortest signed offset for circular arrangement
+            let off = i - idx;
+            if (off > n / 2) off -= n;
+            if (off < -n / 2) off += n;
 
-        {n > 1 && (
-          <>
+            const isActive = off === 0;
+            const angle = off * SPREAD;            // tilt around arc
+            const rad = (angle * Math.PI) / 180;
+            const x = Math.sin(rad) * RADIUS;
+            const y = (1 - Math.cos(rad)) * (RADIUS * 0.55); // subtle dip
+            const scale = isActive ? 1 : Math.max(0.55, 0.78 - Math.abs(off) * 0.08);
+            const opacity = Math.abs(off) > 3 ? 0 : isActive ? 1 : 0.55 - Math.abs(off) * 0.08;
+            const z = -Math.abs(off);
+
+            return (
+              <motion.button
+                type="button"
+                key={src + i}
+                onClick={() => (isActive ? onOpen(src) : setIdx(i))}
+                aria-label={isActive ? "Open image" : `Show image ${i + 1}`}
+                className="absolute left-1/2 top-1/2 origin-center"
+                style={{ zIndex: 50 + z }}
+                animate={{
+                  x: x - 0,
+                  y: y - 0,
+                  rotate: angle,
+                  scale,
+                  opacity,
+                }}
+                initial={false}
+                transition={{ type: "spring", stiffness: 180, damping: 22, mass: 0.7 }}
+              >
+                <div
+                  className="relative -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[28px] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.55)] ring-1 ring-white/10"
+                  style={{
+                    width: isActive ? 320 : 200,
+                    height: isActive ? 220 : 140,
+                    transition: "width 0.5s cubic-bezier(.2,.8,.2,1), height 0.5s cubic-bezier(.2,.8,.2,1)",
+                  }}
+                >
+                  <img
+                    src={src}
+                    alt=""
+                    draggable={false}
+                    loading="lazy"
+                    className="h-full w-full object-cover"
+                    style={{ filter: isActive ? "none" : "saturate(0.85) brightness(0.9)" }}
+                  />
+                  {/* soft edge vignette */}
+                  <div className="pointer-events-none absolute inset-0 rounded-[28px] shadow-[inset_0_0_40px_rgba(0,0,0,0.45)]" />
+                  {isActive && (
+                    <motion.div
+                      layoutId="arc-active-glow"
+                      className="pointer-events-none absolute -inset-1 rounded-[32px]"
+                      style={{
+                        background:
+                          "linear-gradient(135deg, var(--neon), transparent 60%)",
+                        opacity: 0.35,
+                        filter: "blur(14px)",
+                        zIndex: -1,
+                      }}
+                    />
+                  )}
+                </div>
+              </motion.button>
+            );
+          })}
+        </motion.div>
+      </div>
+
+      {/* Controls */}
+      <div className="mt-2 flex items-center justify-center gap-4">
+        <button
+          type="button"
+          onClick={() => go(-1)}
+          aria-label="Previous"
+          className="flex h-10 w-10 items-center justify-center rounded-full glass haptic"
+        >
+          <ChevronLeft className="h-5 w-5" />
+        </button>
+        <div className="flex items-center gap-1.5">
+          {slides.map((_, i) => (
             <button
-              type="button"
-              onClick={() => go(-1)}
-              aria-label="Previous"
-              className="absolute left-2 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full glass haptic"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-            <button
-              type="button"
-              onClick={() => go(1)}
-              aria-label="Next"
-              className="absolute right-2 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full glass haptic"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
-            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5">
-              {slides.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setIdx(i)}
-                  aria-label={`Go to slide ${i + 1}`}
-                  className={`h-1.5 rounded-full transition-all ${
-                    i === idx ? "w-6 bg-[var(--neon)]" : "w-1.5 bg-foreground/40"
-                  }`}
-                />
-              ))}
-            </div>
-          </>
-        )}
+              key={i}
+              onClick={() => { setIdx(i); haptic(); }}
+              aria-label={`Go to image ${i + 1}`}
+              className={`h-1.5 rounded-full transition-all ${
+                i === idx ? "w-6 bg-[var(--neon)]" : "w-1.5 bg-foreground/40"
+              }`}
+            />
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={() => go(1)}
+          aria-label="Next"
+          className="flex h-10 w-10 items-center justify-center rounded-full glass haptic"
+        >
+          <ChevronRight className="h-5 w-5" />
+        </button>
       </div>
     </div>
   );
@@ -197,55 +262,62 @@ export function Projects() {
             />
             <motion.div
               layoutId={`card-${active.id}`}
-              className="glass-strong glow relative z-10 grid max-h-[88vh] w-full max-w-5xl overflow-hidden rounded-3xl md:grid-cols-2"
+              className="glass-strong glow relative z-10 flex max-h-[92vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={() => setActive(null)}
                 aria-label="Close"
-                className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full glass haptic"
+                className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full glass haptic"
               >
                 <X className="h-5 w-5" />
               </button>
-              <motion.div className="relative flex aspect-[4/3] items-center justify-center bg-background/40 md:aspect-auto">
-                <motion.img
-                  layoutId={`img-${active.id}`}
-                  src={active.cover}
-                  alt={active.title}
-                  className="h-full w-full object-contain p-4"
-                />
-                <div className={`pointer-events-none absolute inset-0 bg-gradient-to-tr ${active.accent} opacity-15 mix-blend-overlay`} />
-              </motion.div>
-              <div className="overflow-y-auto p-7">
-                <h3 className="font-display text-3xl">{active.title}</h3>
-                <p className="mt-2 text-foreground/70">{active.description}</p>
-                <p className="mt-4 text-sm text-foreground/75 leading-relaxed">{active.long}</p>
 
-                <p className="mt-6 text-xs uppercase tracking-widest text-foreground/60">Tech stack</p>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {active.tech.map((t) => (
-                    <span key={t} className="rounded-full glass px-3 py-1 text-xs text-[var(--neon)]">
-                      {t}
-                    </span>
-                  ))}
+              {/* Hidden image to preserve shared layout transition */}
+              <motion.img
+                layoutId={`img-${active.id}`}
+                src={active.cover}
+                alt=""
+                aria-hidden
+                className="pointer-events-none absolute opacity-0"
+              />
+
+              <div className="overflow-y-auto">
+                {/* Arc gallery */}
+                <div className="relative px-4 pt-10 pb-2">
+                  <div className={`pointer-events-none absolute inset-0 bg-gradient-to-b ${active.accent} opacity-10`} />
+                  <ArcGallery images={[active.cover, ...active.images]} onOpen={setLightbox} />
                 </div>
 
-                <p className="mt-6 text-xs uppercase tracking-widest text-foreground/60">Gallery</p>
-                <GalleryCarousel images={active.images} onOpen={setLightbox} />
+                {/* Details */}
+                <div className="px-7 pb-8 pt-2">
+                  <h3 className="font-display text-3xl">{active.title}</h3>
+                  <p className="mt-2 text-foreground/70">{active.description}</p>
+                  <p className="mt-4 text-sm text-foreground/75 leading-relaxed">{active.long}</p>
 
-                <div className="mt-6 flex flex-wrap gap-3">
-                  {active.links.map((l) => (
-                    <a
-                      key={l.label}
-                      href={l.href}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      className="haptic inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium text-background"
-                      style={{ background: "var(--grad-aurora)" }}
-                    >
-                      {l.label} <ExternalLink className="h-4 w-4" />
-                    </a>
-                  ))}
+                  <p className="mt-6 text-xs uppercase tracking-widest text-foreground/60">Tech stack</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {active.tech.map((t) => (
+                      <span key={t} className="rounded-full glass px-3 py-1 text-xs text-[var(--neon)]">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    {active.links.map((l) => (
+                      <a
+                        key={l.label}
+                        href={l.href}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="haptic inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium text-background"
+                        style={{ background: "var(--grad-aurora)" }}
+                      >
+                        {l.label} <ExternalLink className="h-4 w-4" />
+                      </a>
+                    ))}
+                  </div>
                 </div>
               </div>
             </motion.div>
