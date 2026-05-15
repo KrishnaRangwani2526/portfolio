@@ -121,6 +121,23 @@ function Scene() {
           opacity={0}
         />
       </mesh>
+      <mesh ref={icoRef} position={[2, 1, -1]}>
+        <icosahedronGeometry args={[0.55, 0]} />
+        <meshStandardMaterial
+          color="#9ad4ff"
+          emissive="#3b82f6"
+          emissiveIntensity={0.6}
+          roughness={0.2}
+          metalness={0.85}
+          flatShading
+          transparent
+          opacity={0.5}
+        />
+      </mesh>
+      <mesh ref={ringRef} rotation={[Math.PI / 2.4, 0, 0]}>
+        <torusGeometry args={[2.6, 0.012, 16, 160]} />
+        <meshBasicMaterial color="#7ec8ff" transparent opacity={0.2} />
+      </mesh>
     </group>
   );
 }
