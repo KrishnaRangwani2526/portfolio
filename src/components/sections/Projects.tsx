@@ -142,8 +142,8 @@ function ArcGallery({ images, onOpen }: { images: string[]; onOpen: (src: string
                 <div
                   className="relative -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[28px] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.55)] ring-1 ring-white/10"
                   style={{
-                    width: isActive ? 320 : 200,
-                    height: isActive ? 220 : 140,
+                    width: isActive ? 400 : 220,
+                    height: isActive ? 270 : 150,
                     transition: "width 0.5s cubic-bezier(.2,.8,.2,1), height 0.5s cubic-bezier(.2,.8,.2,1)",
                   }}
                 >
