@@ -262,55 +262,62 @@ export function Projects() {
             />
             <motion.div
               layoutId={`card-${active.id}`}
-              className="glass-strong glow relative z-10 grid max-h-[88vh] w-full max-w-5xl overflow-hidden rounded-3xl md:grid-cols-2"
+              className="glass-strong glow relative z-10 flex max-h-[92vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={() => setActive(null)}
                 aria-label="Close"
-                className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full glass haptic"
+                className="absolute right-4 top-4 z-20 flex h-10 w-10 items-center justify-center rounded-full glass haptic"
               >
                 <X className="h-5 w-5" />
               </button>
-              <motion.div className="relative flex aspect-[4/3] items-center justify-center bg-background/40 md:aspect-auto">
-                <motion.img
-                  layoutId={`img-${active.id}`}
-                  src={active.cover}
-                  alt={active.title}
-                  className="h-full w-full object-contain p-4"
-                />
-                <div className={`pointer-events-none absolute inset-0 bg-gradient-to-tr ${active.accent} opacity-15 mix-blend-overlay`} />
-              </motion.div>
-              <div className="overflow-y-auto p-7">
-                <h3 className="font-display text-3xl">{active.title}</h3>
-                <p className="mt-2 text-foreground/70">{active.description}</p>
-                <p className="mt-4 text-sm text-foreground/75 leading-relaxed">{active.long}</p>
 
-                <p className="mt-6 text-xs uppercase tracking-widest text-foreground/60">Tech stack</p>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {active.tech.map((t) => (
-                    <span key={t} className="rounded-full glass px-3 py-1 text-xs text-[var(--neon)]">
-                      {t}
-                    </span>
-                  ))}
+              {/* Hidden image to preserve shared layout transition */}
+              <motion.img
+                layoutId={`img-${active.id}`}
+                src={active.cover}
+                alt=""
+                aria-hidden
+                className="pointer-events-none absolute opacity-0"
+              />
+
+              <div className="overflow-y-auto">
+                {/* Arc gallery */}
+                <div className="relative px-4 pt-10 pb-2">
+                  <div className={`pointer-events-none absolute inset-0 bg-gradient-to-b ${active.accent} opacity-10`} />
+                  <ArcGallery images={[active.cover, ...active.images]} onOpen={setLightbox} />
                 </div>
 
-                <p className="mt-6 text-xs uppercase tracking-widest text-foreground/60">Gallery</p>
-                <GalleryCarousel images={active.images} onOpen={setLightbox} />
+                {/* Details */}
+                <div className="px-7 pb-8 pt-2">
+                  <h3 className="font-display text-3xl">{active.title}</h3>
+                  <p className="mt-2 text-foreground/70">{active.description}</p>
+                  <p className="mt-4 text-sm text-foreground/75 leading-relaxed">{active.long}</p>
 
-                <div className="mt-6 flex flex-wrap gap-3">
-                  {active.links.map((l) => (
-                    <a
-                      key={l.label}
-                      href={l.href}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      className="haptic inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium text-background"
-                      style={{ background: "var(--grad-aurora)" }}
-                    >
-                      {l.label} <ExternalLink className="h-4 w-4" />
-                    </a>
-                  ))}
+                  <p className="mt-6 text-xs uppercase tracking-widest text-foreground/60">Tech stack</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {active.tech.map((t) => (
+                      <span key={t} className="rounded-full glass px-3 py-1 text-xs text-[var(--neon)]">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    {active.links.map((l) => (
+                      <a
+                        key={l.label}
+                        href={l.href}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="haptic inline-flex items-center gap-2 rounded-full px-5 py-2 text-sm font-medium text-background"
+                        style={{ background: "var(--grad-aurora)" }}
+                      >
+                        {l.label} <ExternalLink className="h-4 w-4" />
+                      </a>
+                    ))}
+                  </div>
                 </div>
               </div>
             </motion.div>
