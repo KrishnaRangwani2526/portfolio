@@ -14,6 +14,17 @@ export const skills = [
   { group: "Tools", items: ["Git", "GitHub", "VS Code", "PostgreSQL", "Supabase", "REST API"] },
 ];
 
+export type Certificate = {
+  id: string;
+  title: string;
+  issuer: string;
+  date: string;
+  image: string;
+  verifyUrl?: string;
+};
+
+export const certificates: Certificate[] = [];
+
 export const experience = [
   {
     role: "Software Developer Intern",

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Home, User, Sparkles, Briefcase, FolderKanban, Code2, FileText, Sun, Moon, Menu, X } from "lucide-react";
+import { Home, User, Sparkles, Briefcase, FolderKanban, Award, Code2, FileText, Sun, Moon, Menu, X } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
 
 const Github = (props: React.SVGProps<SVGSVGElement>) => (
@@ -20,6 +20,7 @@ const sections = [
   { id: "skills", label: "Skills", icon: Sparkles },
   { id: "experience", label: "Work", icon: Briefcase },
   { id: "projects", label: "Projects", icon: FolderKanban },
+  { id: "certificates", label: "Certificates", icon: Award },
 ];
 
 const externals = [
