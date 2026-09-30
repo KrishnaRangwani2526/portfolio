@@ -46,11 +46,15 @@ export function Certificates() {
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <h3 className="font-display text-lg font-semibold">{certificate.title}</h3>
-                      <p className="mt-1 text-sm text-foreground/65">{certificate.issuer}</p>
+                      {certificate.issuer && (
+                        <p className="mt-1 text-sm text-foreground/65">{certificate.issuer}</p>
+                      )}
                     </div>
-                    <span className="shrink-0 rounded-full glass px-2.5 py-1 text-xs text-foreground/70">
-                      {certificate.date}
-                    </span>
+                    {certificate.date && (
+                      <span className="shrink-0 rounded-full glass px-2.5 py-1 text-xs text-foreground/70">
+                        {certificate.date}
+                      </span>
+                    )}
                   </div>
                   <div className="mt-4 flex flex-wrap gap-4 text-sm">
                     <a

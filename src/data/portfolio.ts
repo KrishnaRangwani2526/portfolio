@@ -17,13 +17,34 @@ export const skills = [
 export type Certificate = {
   id: string;
   title: string;
-  issuer: string;
-  date: string;
+  issuer?: string;
+  date?: string;
   image: string;
   verifyUrl?: string;
 };
 
-export const certificates: Certificate[] = [];
+export const certificates: Certificate[] = [
+  {
+    id: "skbr-internship",
+    title: "SKBR Internship",
+    image: "/certificates/SKBR%20internship.png",
+  },
+  {
+    id: "mern-stack",
+    title: "MERN Stack",
+    image: "/certificates/MERN%20STACK.png",
+  },
+  {
+    id: "machine-learning-bootcamp",
+    title: "Machine Learning Bootcamp",
+    image: "/certificates/machine%20learning%20bootcamp.jpg",
+  },
+  {
+    id: "ai-practitioner",
+    title: "AI Practitioner",
+    image: "/certificates/AI%20practitioner.png",
+  },
+];
 
 export const experience = [
   {
