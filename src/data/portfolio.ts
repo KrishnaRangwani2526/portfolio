@@ -1,19 +1,86 @@
 export const profile = {
   name: "Krishna Rangwani",
-  roles: ["Full-Stack Developer", "AI/ML Engineer", "Web Product Builder", "Backend & Automation Specialist"],
+  roles: [
+    "Full-Stack & AI/ML Developer",
+    "LLM & AI Orchestration Specialist",
+    "Web Product Builder",
+    "Backend & Automation Engineer",
+  ],
   tagline:
-    "I build AI-enabled web products, intelligent automation flows, and clean backend systems that solve real user problems.",
+    "Full-Stack and AI/ML developer shipping production apps for real clients: 2 platforms serving 200+ users, 67% faster load times, and 80% less manual work. Technovate 3.0 Bronze medalist.",
   email: "krishnarangwani88@gmail.com",
+  phone: "+91-7976572988",
   location: "Chandigarh, India",
   isOpenToWork: true,
   status: "Open to Work",
 };
 
 export const skills = [
-  { group: "Languages", items: ["Python", "TypeScript", "C++", "JavaScript", "SQL"] },
-  { group: "Web & Frameworks", items: ["HTML", "CSS", "React.js", "Node.js", "Express.js"] },
-  { group: "AI & Data", items: ["Machine Learning", "Deep Learning", "NLP", "TensorFlow", "OpenCV", "NumPy", "Pandas", "Scikit-learn", "Matplotlib"] },
-  { group: "Tools", items: ["Git", "GitHub", "VS Code", "PostgreSQL", "Supabase", "REST API"] },
+  {
+    group: "AI & ML",
+    items: [
+      "LLM Integration (Gemini API)",
+      "AI Orchestration",
+      "Prompt Engineering",
+      "NLP",
+      "Machine Learning",
+      "Deep Learning",
+      "Recommendation Systems",
+      "Random Forest",
+      "Scikit-learn",
+      "TensorFlow",
+      "OpenCV",
+      "NumPy",
+      "Pandas",
+      "Matplotlib",
+    ],
+  },
+  {
+    group: "Languages",
+    items: ["Python", "TypeScript", "C++", "JavaScript", "SQL"],
+  },
+  {
+    group: "Full-Stack & Web",
+    items: [
+      "React.js",
+      "Node.js",
+      "Express.js",
+      "RESTful APIs",
+      "JWT Authentication",
+      "RBAC",
+      "Tailwind CSS",
+      "HTML",
+      "CSS",
+      "WebSockets",
+    ],
+  },
+  {
+    group: "Databases & Tools",
+    items: [
+      "MongoDB",
+      "MySQL",
+      "SQLite",
+      "Redis",
+      "Caching",
+      "System Design",
+      "PostgreSQL",
+      "Supabase",
+      "Git",
+      "GitHub",
+      "Vite",
+      "VS Code",
+    ],
+  },
+  {
+    group: "Core CS & Coursework",
+    items: [
+      "Data Structures & Algorithms",
+      "Object-Oriented Programming",
+      "DBMS",
+      "Operating Systems",
+      "Computer Networks",
+    ],
+  },
 ];
 
 export type Certificate = {
@@ -48,22 +115,79 @@ export const certificates: Certificate[] = [
   },
 ];
 
-export const experience = [
+export type Achievement = {
+  id: string;
+  title: string;
+  role: string;
+  event: string;
+  description: string;
+  date: string;
+  badge: string;
+};
+
+export const achievements: Achievement[] = [
+  {
+    id: "technovate",
+    title: "Bronze Medalist — Technovate 3.0",
+    role: "Team Lead",
+    event: "Technovate 3.0 (150+ teams)",
+    description: "Podium finish among 150+ teams for DevConnect, building an AI-powered candidate/recruiter platform with ATS analysis and 5-signal ranking.",
+    date: "2026",
+    badge: "Podium Finish",
+  },
+  {
+    id: "placement-cell",
+    title: "Training & Placement Cell — UIET",
+    role: "Member & Lead",
+    event: "UIET Panjab University",
+    description: "Coordinated campus placement drives, company outreach, and led student recruitment management team.",
+    date: "2024 — Present",
+    badge: "Leadership",
+  },
+];
+
+export type ExperienceItem = {
+  role: string;
+  company: string;
+  duration: string;
+  location?: string;
+  tech?: string[];
+  points: string[];
+};
+
+export const experience: ExperienceItem[] = [
+  {
+    role: "App Developer Intern",
+    company: "SKBR Exports",
+    duration: "Jun 2026 — Jul 2026",
+    location: "Remote",
+    tech: ["MongoDB", "Express.js", "React.js", "Node.js", "Redis", "JWT", "REST APIs", "RBAC"],
+    points: [
+      "Analyzed client manual trading workflow and built a real-time MERN platform with 3 roles (Admin, Broker, Miller) serving 100+ users (50 brokers, 50 millers).",
+      "Cut recording time from 10 min to 2 min (80% faster) across ~10 daily transactions with verifiable digital records.",
+      "Built one-click demand broadcast to 50 brokers (replacing one-by-one calls) plus billing, invoicing, and godown tracking.",
+      "Cut load time from 3s to 1s (67%) via Redis caching, load-based optimization, and redundant online/offline databases.",
+    ],
+  },
   {
     role: "Software Developer Intern",
     company: "Learning Zone",
     duration: "Jan 2026 — Mar 2026",
+    location: "Hybrid",
+    tech: ["MySQL", "Redis", "Google Drive API", "Role-Based Auth", "React.js", "Node.js"],
     points: [
-      "Built a web-based student fee management system to automate dues, payments, and reporting.",
-      "Implemented secure authentication and role-based dashboards for admins and staff.",
-      "Designed a MySQL schema for student profiles, payment history, and attendance tracking.",
-      "Integrated dashboard visualizations for monthly fee reports and overdue monitoring.",
+      "Built a full-stack institute platform from scratch for 50 students, 5 teachers, and 50 parents (~100 daily users).",
+      "Built role-based dashboards (attendance, notes, classes) and digitized a year of fee records with reminders.",
+      "Added parent notifications and an AI homework scheduler and timetable generator, cutting admin workload.",
+      "Cut load time from 3s to 1s (67%) via Redis caching, load-based optimization, and redundant databases.",
     ],
   },
   {
     role: "AI Product Engineer",
     company: "Personal & Academic Projects",
     duration: "Oct 2025 — Present",
+    location: "Self-Directed",
+    tech: ["Flask", "OpenCV", "TensorFlow", "PyTorch", "OCR", "WebSockets"],
     points: [
       "Developed intelligent systems for prescription OCR, attendance verification, and career discovery.",
       "Built backend APIs using Flask, OpenCV, and TensorFlow for production-ready AI inference.",
@@ -71,13 +195,15 @@ export const experience = [
     ],
   },
   {
-    role: "IT Student",
+    role: "B.E. in Information Technology",
     company: "UIET Panjab University",
-    duration: "2024 — Present",
+    duration: "2024 — 2028",
+    location: "Chandigarh",
+    tech: ["CGPA: 9.6 / 10", "DSA", "DBMS", "OS", "Computer Networks"],
     points: [
-      "Pursuing BE in Information Technology with a 9.6 CGPA and strong programming fundamentals.",
-      "Completed advanced coursework in DSA, DBMS, OS, CN, and software engineering.",
-      "Delivered full-stack projects with AI, backend services, and data-driven interfaces.",
+      "Pursuing BE in Information Technology with a 9.6 / 10 CGPA and strong programming fundamentals.",
+      "Completed advanced coursework in Data Structures & Algorithms, DBMS, Operating Systems, Computer Networks, and Software Engineering.",
+      "Podium finish in Technovate 3.0 (Bronze medalist) among 150+ teams; Member & Lead in Training & Placement Cell.",
     ],
   },
 ];
@@ -94,16 +220,13 @@ export type Project = {
   accent: string;
 };
 
-const cover = (seed: string, w = 1200, h = 800) =>
-  `https://picsum.photos/seed/${seed}/${w}/${h}`;
-
 export const projects: Project[] = [
   {
     id: "devconnect",
     title: "DevConnect",
-    description: "AI-powered full-stack career platform for job seekers, recruiters, and freelancers.",
-    long: "DevConnect is an AI-powered full-stack platform that connects job seekers, recruiters, and freelancers in a unified ecosystem. It provides dedicated dashboards for candidates and recruiters to streamline hiring and collaboration, with AI resume generation, ATS score analysis, and skill extraction from certificates and projects.",
-    tech: ["React.js", "TypeScript", "Tailwind CSS", "Node.js", "Express.js", "Supabase", "OpenAI API"],
+    description: "AI-powered career platform unifying candidate & recruiter workflows; Technovate 3.0 Bronze Medalist (150+ teams).",
+    long: "DevConnect is an AI-powered full-stack platform that connects job seekers, recruiters, and freelancers in a unified ecosystem, awarded Bronze Medal at Technovate 3.0 out of 150+ teams. Designed a 5-signal statistical candidate ranking algorithm (skills, projects, ATS score, GitHub, internships). Orchestrated Gemini API structured outputs for automated resume generation, ATS analysis, and skill extraction, coupled with pre-trained ML models for ATS accuracy, AI rank-improvement tips, referrals, and streak tracking.",
+    tech: ["React.js", "Node.js", "Express.js", "MongoDB", "Gemini API", "TypeScript", "Tailwind CSS"],
     cover: "/devconnect1.png",
     images: [
       "/devconnect2.png",
@@ -121,6 +244,41 @@ export const projects: Project[] = [
     accent: "from-cyan-400 to-sky-500",
   },
   {
+    id: "wandermate",
+    title: "WanderMate AI",
+    description: "AI-powered travel platform with multi-account incentives, itinerary generator, and deal analysis.",
+    long: "Team lead of WanderMate AI, an open-source travel platform with 3 account tiers (traveler, influencer, local business) promoting local vendors and tourism across India. Designed a token, credit, and score-based discount system rewarding all 3 tiers. Engineered an AI chatbot and guided flow agent (LLM orchestration) generating itineraries by budget and interests, alongside a taste-based recommender, cheapest-flight discovery, and deal analysis.",
+    tech: ["React.js", "Vite", "Tailwind CSS", "Python", "Flask", "SQLite", "LLM Orchestration"],
+    cover: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1200&q=80",
+    ],
+    links: [
+      { label: "Live Demo", href: "#" },
+      { label: "GitHub", href: "https://github.com/KrishnaRangwani2526" },
+    ],
+    accent: "from-teal-400 to-emerald-500",
+  },
+  {
+    id: "cricket-acoustic",
+    title: "Cricket Species Acoustic Classification",
+    description: "Faculty-guided bioacoustic ML research classifying 4,500+ chirp recordings.",
+    long: "Cricket Species Acoustic Classification is a faculty-guided research project building an ML classifier on 4,500+ bioacoustic chirp recordings. Developed signal processing and feature extraction pipelines utilizing Random Forest with Scikit-learn in Python, with ongoing research toward spectrogram-based Convolutional Neural Networks (CNN) for multi-species acoustic classification.",
+    tech: ["Python", "Scikit-learn", "Random Forest", "Machine Learning", "Audio Processing", "CNN"],
+    cover: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80",
+    ],
+    links: [
+      { label: "Research Overview", href: "#" },
+      { label: "GitHub", href: "https://github.com/KrishnaRangwani2526" },
+    ],
+    accent: "from-emerald-400 to-lime-500",
+  },
+  {
     id: "meddecode",
     title: "MedDecode",
     description: "AI-based prescription reader that converts handwritten prescriptions into structured digital data.",
@@ -134,9 +292,9 @@ export const projects: Project[] = [
   {
     id: "learningzone",
     title: "Learning Zone",
-    description: "Education management platform for fee, attendance, and student performance tracking.",
-    long: "Learning Zone is a full-stack education management platform designed to streamline academic and administrative processes. It offers centralized student, course, and institutional data management, with fee handling, attendance tracking, and real-time progress monitoring for educators.",
-    tech: ["React.js", "Node.js", "Express.js", "MongoDB"],
+    description: "Education management platform for fee, attendance, and student performance tracking with 67% faster load times.",
+    long: "Learning Zone is a full-stack education platform built from scratch serving 50 students, 5 teachers, and 50 parents (~100 daily users). Features role-based dashboards, digitized fee records with automated reminders, parent notifications, and an AI homework scheduler. Achieved 67% faster page load times (3s to 1s) via Redis caching and database query optimization.",
+    tech: ["React.js", "Node.js", "Express.js", "MySQL", "Redis", "Google Drive API"],
     cover: "/learningzone1.png",
     images: [
       "/learningzone15.png",

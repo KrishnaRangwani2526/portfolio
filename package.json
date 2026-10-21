@@ -4,6 +4,8 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
+    "update-resume": "node copy-resume.mjs",
+    "predev": "node copy-resume.mjs",
     "dev": "vite dev",
     "build": "vite build",
     "build:dev": "vite build --mode development",

@@ -52,12 +52,29 @@ export function Experience() {
                 <div className="flex flex-wrap items-baseline justify-between gap-2">
                   <div>
                     <h3 className="font-display text-xl sm:text-2xl">{e.role}</h3>
-                    <p className="text-sm text-foreground/70">{e.company}</p>
+                    <div className="mt-1 flex flex-wrap items-center gap-2">
+                      <p className="text-sm font-medium text-foreground/80">{e.company}</p>
+                      {e.location && (
+                        <span className="text-xs text-foreground/50">• {e.location}</span>
+                      )}
+                    </div>
                   </div>
                   <span className="rounded-full glass px-3 py-1 text-xs text-foreground/80">
                     {e.duration}
                   </span>
                 </div>
+                {e.tech && e.tech.length > 0 && (
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {e.tech.map((t) => (
+                      <span
+                        key={t}
+                        className="rounded-full bg-white/5 border border-white/10 px-2 py-0.5 text-[11px] text-foreground/70"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                )}
                 <ul className="mt-4 space-y-2 text-sm text-foreground/75">
                   {e.points.map((p) => (
                     <li key={p} className="flex gap-3">

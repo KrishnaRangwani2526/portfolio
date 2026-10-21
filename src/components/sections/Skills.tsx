@@ -19,7 +19,7 @@ export function Skills() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ duration: 0.6, delay: gi * 0.08 }}
-              className="glass-strong rounded-3xl p-6"
+              className={`glass-strong rounded-3xl p-6 ${gi === skills.length - 1 && skills.length % 2 !== 0 ? "sm:col-span-2" : ""}`}
             >
               <p className="text-xs uppercase tracking-widest text-foreground/60">{g.group}</p>
               <div className="mt-4 flex flex-wrap gap-2">

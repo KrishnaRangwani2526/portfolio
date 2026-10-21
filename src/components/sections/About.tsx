@@ -18,11 +18,11 @@ export function About() {
               Building web products with <span className="neon-text">AI, automation,</span> and clarity.
             </h3>
             <p className="mt-4 text-foreground/75 leading-relaxed">
-              I'm a BE Information Technology student at UIET Panjab University, focused on full-stack systems, AI-driven workflows, and backend automation.
-              I create products that make data easy to understand, workflows faster, and digital experiences more dependable.
+              I'm a BE Information Technology student at UIET Panjab University (9.6 CGPA), focused on full-stack systems, AI-driven workflows, and backend automation.
+              I build and ship production applications for real clients that make data easy to understand, workflows faster, and digital experiences more dependable.
             </p>
             <p className="mt-4 text-foreground/65 leading-relaxed">
-              Recent work includes fee management dashboards, AI-powered prescription OCR, and secure attendance systems that combine face recognition and location validation.
+              Recent client platforms include SKBR Exports' real-time trading platform cutting transaction recording time by 80%, Learning Zone's fee management institute system serving ~100 daily users with 67% faster load times, and DevConnect (Technovate 3.0 Bronze medalist).
             </p>
           </motion.div>
 
@@ -33,12 +33,25 @@ export function About() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="grid gap-4 md:col-span-2"
           >
-            <Stat label="Years building" value="2+" />
-            <Stat label="Projects shipped" value="10+" />
+            <div className="grid grid-cols-2 gap-3">
+              <Stat label="Academic CGPA" value="9.6" />
+              <Stat label="Users Served" value="200+" />
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <Stat label="Faster Speeds" value="67%" />
+              <Stat label="Time Saved" value="80%" />
+            </div>
             <div className="glass rounded-3xl p-6">
               <p className="text-xs uppercase tracking-widest text-foreground/60">Based in</p>
               <p className="mt-2 font-display text-xl">{profile.location}</p>
-              <p className="mt-1 text-sm text-foreground/60">{profile.email}</p>
+              <a href={`mailto:${profile.email}`} className="mt-2 block text-sm text-foreground/70 hover:text-[var(--neon)] transition-colors">
+                {profile.email}
+              </a>
+              {profile.phone && (
+                <a href={`tel:${profile.phone.replace(/[^+\d]/g, "")}`} className="mt-1 block text-sm text-foreground/70 hover:text-[var(--neon)] transition-colors">
+                  {profile.phone}
+                </a>
+              )}
             </div>
           </motion.div>
         </div>
