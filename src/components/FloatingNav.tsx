@@ -165,6 +165,16 @@ export function FloatingNav() {
               exit={{ opacity: 0, y: 20, scale: 0.9 }}
               className="glass-strong glow absolute bottom-16 right-0 w-56 rounded-2xl p-2"
             >
+              <div className="mb-1.5 flex items-center justify-between rounded-xl border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                <span className="flex items-center gap-1.5">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 dark:bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-600 dark:bg-emerald-500"></span>
+                  </span>
+                  <span>Open to Work</span>
+                </span>
+                <span className="text-[10px] text-emerald-600/70 dark:text-emerald-400/70">Available</span>
+              </div>
               {sections.map((s) => {
                 const Icon = s.icon;
                 return (

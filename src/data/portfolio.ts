@@ -5,6 +5,8 @@ export const profile = {
     "I build AI-enabled web products, intelligent automation flows, and clean backend systems that solve real user problems.",
   email: "krishnarangwani88@gmail.com",
   location: "Chandigarh, India",
+  isOpenToWork: true,
+  status: "Open to Work",
 };
 
 export const skills = [

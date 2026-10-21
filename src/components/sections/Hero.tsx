@@ -30,7 +30,32 @@ export function Hero() {
 
   return (
     <section id="home" className="relative flex min-h-[100svh] items-center justify-center px-6">
-      <div className="mx-auto max-w-5xl text-center">
+      <header className="mx-auto max-w-5xl text-center">
+        <motion.div
+          initial={{ opacity: 0, y: -16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="inline-block"
+        >
+          <Magnetic>
+            <a
+              href={`mailto:${profile.email}?subject=Opportunity%20Inquiry%20for%20Krishna`}
+              className="group inline-flex items-center gap-2.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-xs sm:text-sm font-medium text-emerald-600 dark:text-emerald-400 backdrop-blur-md shadow-sm transition-all hover:border-emerald-500/60 hover:bg-emerald-500/20"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 dark:bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-600 dark:bg-emerald-500"></span>
+              </span>
+              <span className="tracking-wide">Open to Work</span>
+              <span className="hidden sm:inline text-emerald-600/50 dark:text-emerald-400/50">•</span>
+              <span className="hidden sm:inline font-normal text-emerald-700/80 dark:text-emerald-300/80 transition-colors group-hover:text-emerald-900 dark:group-hover:text-emerald-200">
+                Available for Opportunities
+              </span>
+              <span className="text-xs text-emerald-600/70 dark:text-emerald-400/70 transition-transform group-hover:translate-x-0.5">→</span>
+            </a>
+          </Magnetic>
+        </motion.div>
+
         <motion.h1
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -88,7 +113,7 @@ export function Hero() {
             </a>
           </Magnetic>
         </motion.div>
-      </div>
+      </header>
 
       <motion.button
         onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
